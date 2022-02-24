@@ -1,7 +1,15 @@
 //profile information
 const overview = document.querySelector(".overview");
+//GitHub username 
 const username = "raqescar";
-const repoList = document.querySelector(".repo-list");
+//list of repo titles 
+const repoTitles = document.querySelector(".repo-list");
+//section where repo data will appear 
+const repoSection = document.querySelector(".repos");
+//section where individual repo data will appear
+const individualRepo = document.querySelector(".repo-data");
+
+
 
 //fetch information from GitHub profile
 const profileInfo = async function () {
@@ -40,11 +48,56 @@ const repoInfo = async function () {
 };
 //repoInfo();
 
+//display repo titles 
 const displayRepos = function (repos) {
     for (const repo of repos) {
       const repoItem = document.createElement("li");
       repoItem.classList.add("repo");
       repoItem.innerHTML = `<h3>${repo.name}</h3>`;
-      repoList.append(repoItem);
+      repoTitles.append(repoItem);
     }
   };
+
+  const repoList = addEventListener ("click", function (e) {
+    if (e.target.matches("h3")) {
+      const repoName = e.target.innerText;
+      //console.log(repoName);
+      individualRepoData(repoName);
+    }
+  });
+
+//get individual repo info
+  const individualRepoData = async function (repoName) {
+    indivRepoFetch = await fetch (`https://api.github.com/repos/${username}/${repoName}`);
+    const repoInfo = await indivRepoFetch.json();
+    console.log(repoInfo);
+    //fetch languages from repo info
+    const fetchLanguages = await fetch (repoInfo.languages_url);
+    const languageData = await fetchLanguages.json();
+    console.log(languageData);
+    //append language data to array
+    const languages = [];
+    for (const type of languages) {
+    languages.append(languageData);
+    console.log(languages);
+    }
+    displayRepoData(repoInfo,languages);
+  };
+
+//display individual repo data 
+const displayRepoData = function (repoInfo,languages) {
+  individualRepo.innerHTML = "";
+  individualRepo.classList.remove("hide");
+  repoSection.classList.add("hide");
+
+  const repoDiv = document.createElement("div");
+  repoDiv.innerHTML = `
+    <h3>Name: ${repoInfo.name}</h3>
+    <p>Description: ${repoInfo.description}</p>
+    <p>Default Branch: ${repoInfo.default_branch}</p>
+    <p>Languages: ${languages.join(", ")}</p>
+    <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
+  `;
+  individualRepo.append(repoDiv);
+  
+};
