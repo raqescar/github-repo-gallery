@@ -8,6 +8,9 @@ const repoTitles = document.querySelector(".repo-list");
 const repoSection = document.querySelector(".repos");
 //section where individual repo data will appear
 const individualRepo = document.querySelector(".repo-data");
+// back to repos gallery button
+const viewReposButton = document.querySelector(".view-repos");
+// const filterInput = document.querySelector('placeholder="Search by name"]');
 
 
 
@@ -89,6 +92,7 @@ const displayRepoData = function (repoInfo,languages) {
   individualRepo.innerHTML = "";
   individualRepo.classList.remove("hide");
   repoSection.classList.add("hide");
+  viewReposButton.classList.remove("hide");
 
   const repoDiv = document.createElement("div");
   repoDiv.innerHTML = `
@@ -101,3 +105,9 @@ const displayRepoData = function (repoInfo,languages) {
   individualRepo.append(repoDiv);
   
 };
+
+viewReposButton.addEventListener("click", function () {
+  repoSection.classList.remove("hide");
+  individualRepo.classList.add("hide");
+  viewReposButton.classList.add("hide");
+});
