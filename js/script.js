@@ -10,7 +10,7 @@ const repoSection = document.querySelector(".repos");
 const individualRepo = document.querySelector(".repo-data");
 // back to repos gallery button
 const viewReposButton = document.querySelector(".view-repos");
-// const filterInput = document.querySelector('placeholder="Search by name"]');
+const filterInput = document.querySelector(".filter-repos");
 
 
 
@@ -53,6 +53,7 @@ const repoInfo = async function () {
 
 //display repo titles 
 const displayRepos = function (repos) {
+  filterInput.classList.remove("hide");
     for (const repo of repos) {
       const repoItem = document.createElement("li");
       repoItem.classList.add("repo");
@@ -110,4 +111,19 @@ viewReposButton.addEventListener("click", function () {
   repoSection.classList.remove("hide");
   individualRepo.classList.add("hide");
   viewReposButton.classList.add("hide");
+});
+
+filterInput.addEventListener("input", function(e) {
+  const searchInput = e.target.value; 
+  console.log(searchInput);
+  const repos = document.querySelectorAll(".repo");
+  const searchLowerCase = searchInput.toLowerCase();
+  for (const repo of repos) {
+    const repoLowerCase = repo.innerText.toLowerCase();
+    if (!repoLowerCase.includes(searchLowerCase)) {
+      repo.classList.add("hide");
+    } else {
+      repo.classList.remove("hide");
+    }
+  }
 });
