@@ -78,11 +78,13 @@ const displayRepos = function (repos) {
     //fetch languages from repo info
     const fetchLanguages = await fetch (repoInfo.languages_url);
     const languageData = await fetchLanguages.json();
+    console.log("this is the language data below");
     console.log(languageData);
     //append language data to array
     const languages = [];
-    for (const type of languages) {
-    languages.append(languageData);
+    for (const language in languageData) {
+    languages.push(language);
+    console.log("languages array");
     console.log(languages);
     }
     displayRepoData(repoInfo,languages);
